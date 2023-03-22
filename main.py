@@ -20,7 +20,7 @@ pygame.display.set_caption("Mi Juego")
 
 #Title Icon
 pygame.display.set_caption("METEOR SHOWER")
-icono = pygame.image.load("car.png")
+icono = pygame.image.load("nave.png")
 pygame.display.set_icon(icono)
 background = pygame.image.load("fondo2.jpg")
 #Convert font to bytes
@@ -50,15 +50,15 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 red = (255, 0, 0)
 
-# Cargar imagen del auto, del disparo y del enemigo
-car_img = pygame.image.load("car.png")
+# Cargar imagen de nave, del disparo y del enemigo
+nave_img = pygame.image.load("nave.png")
 bullet_img = pygame.image.load("bullet.png")
 
 
 
-# Definir la posición inicial del auto
-car_x = screen_width // 2
-car_y = screen_height - 100
+# Definir la posición inicial de nave
+nave_x = screen_width // 2
+nave_y = screen_height - 100
 
 # Definir la posición y velocidad inicial del disparo
 bullet_x = -100
@@ -85,7 +85,7 @@ for e in range (enemysQuantity):
 main_menu = True
 
 # Definir velocidad de movimiento del auto
-car_speed = 0.8
+nave_speed = 0.8
 
 # Definir la lista de enemigos
 enemies = []
@@ -103,30 +103,30 @@ def show_points(x,y):
     screen.blit(text,(x,y))
 
 
-# Definir la función para mover el auto, el disparo y el enemigo
+# Definir la función para mover nave, el disparo y el enemigo
 def move_objects(keys_pressed):
-    global car_x, car_y, bullet_x, bullet_y, bullet_state, enemy_x, enemy_y,points
+    global nave_x, nave_y, bullet_x, bullet_y, bullet_state, enemy_x, enemy_y,points
     if keys_pressed[pygame.K_LEFT]:
-        car_x -= car_speed
+        nave_x -= nave_speed
     elif keys_pressed[pygame.K_RIGHT]:
-        car_x += car_speed
-    if car_x < 0:
-        car_x = 0
-    elif car_x > screen_width - car_img.get_width():
-        car_x = screen_width - car_img.get_width()
+        nave_x += nave_speed
+    if nave_x < 0:
+        nave_x = 0
+    elif nave_x > screen_width - nave_img.get_width():
+        nave_x = screen_width - nave_img.get_width()
 
     if keys_pressed[pygame.K_UP]:
-        car_y -= car_speed
+        nave_y -= nave_speed
     elif keys_pressed[pygame.K_DOWN]:
-        car_y += car_speed
-    if car_y < 0:
-        car_y = 0
-    elif car_y > screen_height - car_img.get_height():
-        car_y = screen_height - car_img.get_height()
+        nave_y += nave_speed
+    if nave_y < 0:
+        nave_y = 0
+    elif nave_y > screen_height - nave_img.get_height():
+        nave_y = screen_height - nave_img.get_height()
 
     if keys_pressed[pygame.K_SPACE] and bullet_state == "ready":
-        bullet_x = car_x + car_img.get_width() // 2 - bullet_img.get_width() // 2
-        bullet_y = car_y
+        bullet_x = nave_x + nave_img.get_width() // 2 - bullet_img.get_width() // 2
+        bullet_y = nave_y
         bullet_state = "fire"
 
     if bullet_state == "fire":
@@ -139,10 +139,8 @@ def move_objects(keys_pressed):
         if enemy_y[e] < screen_height:
             enemy_y[e] += 0.5
 
-            #move_enemies()
         else:
             enemy_y[e] = 1
-            #move_enemies()
             enemy_x[e] = random.randint(0,  screen_width - enemy_img[e].get_width())
 
          # Collision
@@ -170,7 +168,7 @@ def start_game():
 # Definir la función para dibujar el auto, el disparo y el enemigo
 def draw_objects():
     global bullet_state
-    screen.blit(car_img, (car_x, car_y))
+    screen.blit(nave_img, (nave_x, nave_y))
     if bullet_state == "fire":
         screen.blit(bullet_img, (bullet_x, bullet_y))
 
@@ -182,9 +180,9 @@ def draw_objects():
 
     # Detectar colisiones entre el auto y el enemigo
     for e in range(enemysQuantity):
-        car_rect = pygame.Rect(car_x, car_y, car_img.get_width(), car_img.get_height())
+        nave_rect = pygame.Rect(nave_x, nave_y, nave_img.get_width(), nave_img.get_height())
         enemy_rect = pygame.Rect(enemy_x[e], enemy_y[e], enemy_img[e].get_width(), enemy_img[e].get_height())
-        if car_rect.colliderect(enemy_rect):
+        if nave_rect.colliderect(enemy_rect):
             font
             text = font_gameover.render("Game Over!", True, red)
             text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))
@@ -231,7 +229,6 @@ while running:
         # Dibujar el auto, el disparo y el enemigo
         screen.blit(background,(0,0))
         draw_objects()
-        # show points
         show_points(text_x, text_y)
 
         # Actualizar la pantalla
